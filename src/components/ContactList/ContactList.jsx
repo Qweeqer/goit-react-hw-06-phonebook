@@ -6,6 +6,7 @@ import css from './ContactList.module.css';
 
 export const ContactList = ({ contacts }) => {
   const dispatch = useDispatch();
+  console.log('contacts', contacts);
   return (
     <ul>
       {contacts.map(({ id, name, number }) => (
@@ -28,10 +29,12 @@ export const ContactList = ({ contacts }) => {
 
 // export default ContactList;
 
-// ContactList.propTypes = {
-//   contacts: PropTypes.array,
-//   id: PropTypes.string,
-//   name: PropTypes.string,
-//   number: PropTypes.string,
-//   deleteContact: PropTypes.func,
-// };
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
+};
