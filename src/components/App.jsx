@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { addNewContact } from '../redux/contactsSlice';
-import { filteredContacts } from '../redux/filterSlise';
+import { filteredContacts } from '../redux/filterSlice';
 
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
@@ -42,7 +42,7 @@ export const App = () => {
         <ContactForm onSubmit={addContact} />
         <h2>Contacts</h2>
         <Filter onFilter={onFilter} />
-        <ContactList contacts={filterContacts} />
+        <ContactList contacts={filterContacts()} />
       </div>
     </section>
   );
