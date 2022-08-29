@@ -1,74 +1,48 @@
-import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
-
-// import initialContacts from '../contacts.json';
+import { addNewContact } from '../redux/contactsSlice';
+import { filteredContacts } from '../redux/filterSlise';
 
 import { ContactForm } from './ContactForm/ContactForm';
-import ContactList from './ContactList/ContactList';
+import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import './App.module.css';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(
-    () => JSON.parse(localStorage.getItem('contacts')) ?? []
-  );
-  const [filter, setFilter] = useState('');
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.filter);
 
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  const dispatch = useDispatch();
 
-  const formSubmit = ({ name, number }) => {
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-    if (
-      contacts.find(
-        contact =>
-          (contact.name.toLowerCase() === name.toLowerCase() &&
-            contact.number === number) ||
-          contact.number === number
-      )
-    ) {
-      alert(`${name} with ${number} is already in contacts`);
-      return;
+  const addContact = (name, number) => {
+    const newСontact = contacts.find(
+      contact =>
+        (contact.name === name && contact.number === number) ||
+        contact.number === number
+    );
+    if (newСontact) {
+      return alert(`${name} is already in contacts`);
     }
-
-    setContacts(prevState => [contact, ...prevState]);
+    dispatch(addNewContact({ id: nanoid(), name, number }));
   };
 
-  const changeFilterInput = e => {
-    setFilter(e.currentTarget.value);
+  const onFilter = e => {
+    dispatch(filteredContacts(e.currentTarget.value.trim()));
   };
-
-  // const normalizedFilter = filter.toLocaleLowerCase();
-  // const findContacts = contacts.filter(contact =>
-  //   contact.name.includes(filter)
-  // );
-
-  // contacts?.filter(contact =>
-  //   contact.name.toLowerCase().includes(filter.toLowerCase())
-  // );
-  const findContacts = contacts?.filter(
-    contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase()) ||
-      contact.number.includes(filter)
-  );
-
-  const deleteContact = id => {
-    setContacts(contacts.filter(contact => contact.id !== id));
+  const filterContacts = () => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
   };
 
   return (
     <section>
       <div>
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={formSubmit} />
+        <ContactForm onSubmit={addContact} />
         <h2>Contacts</h2>
-        <Filter filter={filter} changeFilterInput={changeFilterInput} />
-        <ContactList contacts={findContacts} deleteContact={deleteContact} />
+        <Filter onFilter={onFilter} />
+        <ContactList contacts={filterContacts} />
       </div>
     </section>
   );
