@@ -14,15 +14,17 @@ export const App = () => {
 
   const dispatch = useDispatch();
 
-  const addContact = (name, number) => {
+  const addContact = ({ name, number }) => {
     const oldСontact = contacts.find(
       contact =>
-        (contact.name === name && contact.number === number) ||
+        (contact.name.toLowerCase() === name.toLowerCase() &&
+          contact.number === number) ||
         contact.number === number
     );
     if (oldСontact) {
-      return alert(`${name} is already in contacts`);
+      return alert(`This number ${number} is already in contacts`);
     }
+
     dispatch(addNewContact({ id: nanoid(), name, number }));
   };
 
@@ -31,10 +33,10 @@ export const App = () => {
   };
   const filterContacts = () => {
     console.log(contacts);
-    return (
-      contacts?.filter(contact =>
-        contact?.name?.toLowerCase()?.includes(filter?.toLowerCase())
-      ) ?? []
+    return contacts.filter(
+      contact =>
+        contact.name.toLowerCase().includes(filter.toLowerCase()) ||
+        contact.number.includes(filter)
     );
   };
 
