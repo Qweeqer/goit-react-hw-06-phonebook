@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import initContacts from '../contacts.json';
+import initContacts from '../contacts.json';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 export const contacts = createSlice({
   name: 'contacts',
-    items: [],
- 
+  initialState: {
+    items: initContacts,
+  },
+
   reducers: {
     addNewContact(state, action) {
       state.items = [...state.items, action.payload];
