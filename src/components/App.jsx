@@ -32,7 +32,7 @@ export const App = () => {
     dispatch(filteredContacts(e.currentTarget.value.trim()));
   };
   const filterContacts = () => {
-    console.log(contacts);
+    // console.log(contacts);
     return contacts.filter(
       contact =>
         contact.name.toLowerCase().includes(filter.toLowerCase()) ||
