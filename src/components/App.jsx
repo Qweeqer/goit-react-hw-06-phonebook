@@ -15,12 +15,12 @@ export const App = () => {
   const dispatch = useDispatch();
 
   const addContact = (name, number) => {
-    const newСontact = contacts.find(
+    const oldСontact = contacts.find(
       contact =>
         (contact.name === name && contact.number === number) ||
         contact.number === number
     );
-    if (newСontact) {
+    if (oldСontact) {
       return alert(`${name} is already in contacts`);
     }
     dispatch(addNewContact({ id: nanoid(), name, number }));
@@ -30,9 +30,11 @@ export const App = () => {
     dispatch(filteredContacts(e.currentTarget.value.trim()));
   };
   const filterContacts = () => {
-    return contacts?.filter(
-      contact =>
-        contact?.name?.toLowerCase().includes(filter?.toLowerCase()) ?? []
+    console.log(contacts);
+    return (
+      contacts?.filter(contact =>
+        contact?.name?.toLowerCase()?.includes(filter?.toLowerCase())
+      ) ?? []
     );
   };
 
