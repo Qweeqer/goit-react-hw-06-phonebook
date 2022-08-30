@@ -30,8 +30,9 @@ export const App = () => {
     dispatch(filteredContacts(e.currentTarget.value.trim()));
   };
   const filterContacts = () => {
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
+    return contacts?.filter(
+      contact =>
+        contact?.name?.toLowerCase().includes(filter?.toLowerCase()) ?? []
     );
   };
 
